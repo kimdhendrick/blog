@@ -5,4 +5,4 @@ title: Hello World
 
 # Hello World
 
-This is my first Astro blog.
+This is my first Astro blog!
