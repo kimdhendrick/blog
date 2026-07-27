@@ -1,22 +1,37 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import FormattedDate from '../components/FormattedDate.astro';
 
 const base = import.meta.env.BASE_URL;
+const posts = (await getCollection('blog')).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 ---
 
 <html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <h1>Hello, world!</h1>
-      <p>This is the start of my blog. Check out the <a href={`${base}blog`}>first post</a>.</p>
-    </main>
-    <Footer />
-  </body>
+<head>
+  <BaseHead title="Kim's Blog" description="All blog posts." />
+</head>
+<body>
+<Header />
+<main>
+  <h1>Still Becoming</h1>
+  <ul class="post-list">
+    {
+      posts.map((post) => (
+          <li>
+            <a href={`${base}${post.id}/`}>{post.data.title}</a>
+            <div class="post-meta">
+              <FormattedDate date={post.data.pubDate} />
+            </div>
+          </li>
+      ))
+    }
+  </ul>
+</main>
+<Footer />
+</body>
 </html>
